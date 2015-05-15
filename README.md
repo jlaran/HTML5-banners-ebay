@@ -2,6 +2,7 @@
 HTML5 Banner template | Kickoff files
 
 <ol>
+  <li>Instalar git - http://git-scm.com/download/</li>
   <li>Instalar node JS - https://nodejs.org/</li>
   <li>Instalar Ruby - <code>\curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enabled # Or, --ruby=1.9.3</code></li>
   <li>Instalar Home Brew - <code>ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</code></li>
