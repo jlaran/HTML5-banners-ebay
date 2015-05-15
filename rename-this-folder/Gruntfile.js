@@ -100,11 +100,9 @@ module.exports = function( grunt )
 			}
 		},
 		watch: {
-			options: {
-				livereload: true
-			},
+			options: { livereload: true },
 			files: [_developFolder+'/**'],
-			tasks: ['default']
+			tasks: ['clean:all','sass','uglify','imagemin','copy','clean:temp']
 		},
 		replace: {
 			dist: {
@@ -112,7 +110,7 @@ module.exports = function( grunt )
 				},
 				files: [{
 					expand: true,
-					src: ['**/*.html'],
+					src: ['dest/**/*.html'],
 					dest: ''
 				}]
 			}
@@ -129,53 +127,46 @@ module.exports = function( grunt )
 			}
 		},
 		connect: {
-			all: {
-				options:{
-					port: 9000,
-					hostname: "0.0.0.0",
-					// Prevents Grunt to close just after the task (starting the server) completes
-					// This will be removed later as `watch` will take care of that
-					//keepalive: true,
-					middleware: function(connect, options) {
-						return [
-							// Load the middleware provided by the livereload plugin
-							// that will take care of inserting the snippet
-							require('grunt-contrib-livereload/lib/utils').livereloadSnippet,
-
-							// Serve the project folder
-							connect.static(options.base)
-						];
-					}
+		  server: {
+		    options: {
+		      livereload: true,
+		      base: 'dest',
+		      port: 9009
+		    }
+		  }
+		},
+		'string-replace': {
+			dist: {
+				files: {
+					'dest/': 'dest/**/*.html',
+				},
+				options: {
+					replacements: [{
+						pattern: /dest\//g,
+						replacement: ''
+					}]
 				}
-			}
-		},
-		open: {
-			all: {
-				// Gets the port from the connect configuration
-				path: 'http://localhost:<%= connect.all.options.port%>'
-			}
-		},
-		regarde: {
-			all: {
-				// This'll just watch the index.html file, you could add **/*.js or **/*.css
-				// to watch Javascript and CSS files too.
-				files:['index.html'],
-				// This configures the task that will run when the file change
-				tasks: ['livereload']
 			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-mkdir');
-	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
+	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-mkdir');
 	grunt.loadNpmTasks('grunt-replace');
+	grunt.loadNpmTasks('grunt-string-replace');
 	grunt.loadNpmTasks('grunt-zip-directories');
-	grunt.loadNpmTasks('grunt-contrib-connect');
+
+	grunt.registerTask('serve', [
+		'default',
+		'connect:server',
+		'watch'
+	]);
 
 	grunt.registerTask('default', [
 		'clean:all',
@@ -185,6 +176,7 @@ module.exports = function( grunt )
 		'imagemin',
 		'copy',
 		'replace',
+		'string-replace',
 		'clean:temp',
 	]);
 
@@ -192,17 +184,11 @@ module.exports = function( grunt )
 		'zip_directories'
 	]);
 
-	grunt.registerTask('server',[
-		'livereload-start',
-		'connect',
-		'open',
-		'regarde'
-	]);
-
 	grunt.task.registerTask('start', 'Write initial files', function(arg1, arg2) {
 		var sassFolder = _developFolder+'sass/';
 		var jsFolder = _developFolder+'js/';
 
+		grunt.file.write(_developFolder+'index.html', '<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8">\n\t\t<title>@@__SOURCE_PATH__</title>\n\t\t<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">\n\t\t<link rel="stylesheet" href="css/@@__SOURCE_PATH__.css">\n\t</head>\n\t<body>\n\n\t\t<div id="banner">\n\t\t\t<div id="collapse-banner">\n\t\t\t\t<h1>Headline Example</h1>\n\t\t\t\t<h2>Small headline</h2>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<script src="http://s0.2mdn.net/ads/studio/Enabler.js"></script>\n\t\t<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.2/TweenMax.min.js"></script>\n\t\t<script src="https://cdn.jsdelivr.net/cutback-js/2.0.0/cutback.min.js"></script>\n\t\t<script src="js/@@__SOURCE_PATH__.js"></script>\n\t</body>\n</html>');
 		grunt.file.write(sassFolder+'variables.scss', '//Sass variables goes here');
 		grunt.file.mkdir(_developFolder+'img/');
 
