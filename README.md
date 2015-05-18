@@ -11,6 +11,7 @@ HTML5 Banner template | Kickoff files
   <li>Instalar Grunt cli - <code>sudo npm install -g grunt-cli</code></li>
   <li>Instalar Modulos NPM - <code>npm install</code></li>
   <li>Instalar compass - <code>gem install compass</code></li>
+  
   <li>Correr el kick off del proyecto - <code>grunt start</code></li>
   <li>Correr el proyecto primera vez - <code>grunt</code></li>
   <li>Correr el proyecto en serve para trabajar - <code>grunt serve</code></li>
