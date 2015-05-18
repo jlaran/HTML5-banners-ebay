@@ -1,4 +1,9 @@
 # Mac default files
 .DS_Store
 node_modules
+README.md
+/readme.html
+/license.txt
+*.md
+node_modules
 .sass-cache
