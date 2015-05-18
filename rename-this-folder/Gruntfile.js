@@ -102,7 +102,7 @@ module.exports = function( grunt )
 		watch: {
 			options: { livereload: true },
 			files: [_developFolder+'/**'],
-			tasks: ['clean:all','sass','uglify','imagemin','copy','string-replace','clean:temp']
+			tasks: ['clean:all','sass','uglify','imagemin','copy','replace','string-replace','clean:temp']
 		},
 		replace: {
 			dist: {
