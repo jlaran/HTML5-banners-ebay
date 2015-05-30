@@ -1,6 +1,3 @@
 [
-  ["300x250","in-page"],
-  ["728x90", "in-app"],
-  ["320x50", "in-app"],
-  ["320x50", "in-page"]
+	["300x50","expand_300x416","campaign-name"]
 ]
