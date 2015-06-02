@@ -17,6 +17,7 @@
 // _sizesArrayCrud[2] = Expand size (if expand or not)
 // _sizesArrayCrud[3] = Campaign Name
 
+
 module.exports = function( grunt ) 
 {
 	var _destFolder = 'dest/';
@@ -26,6 +27,7 @@ module.exports = function( grunt )
 	var _copyFiles = [];
 	var _campaignName = [];
 	var _specificImages = [];
+	var _compressFolders = [];
 
 	var _separatorCampaignNameArray = [];
 	var _separatorExpandSizeArray = [];
@@ -104,18 +106,40 @@ module.exports = function( grunt )
 		});
 
 		//Specific Images for each folder
-		_specificImages.push({
-			expand: true,
-			cwd: _developFolder+'img/'+_sizesArrayCrud[i][3]+'/',
-			src: ['*.{png,jpg,gif,svg}'],
-			dest: _developFolder+'.temp/'+_sizesArrayCrud[i][3]+'/',
-		});
+		if(_sizesArrayCrud[i][3] != ""){
+			_specificImages.push({
+				expand: true,
+				cwd: _developFolder+'img/'+_sizesArrayCrud[i][3]+'/',
+				src: ['*.{png,jpg,gif,svg}'],
+				dest: _developFolder+'.temp/'+_sizesArrayCrud[i][3]+'/'
+			});
+		}
+
 		_specificImages.push({
 			expand: true,
 			cwd: _developFolder+'img/backup/',
 			src: [_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.jpg'],
-			dest: _developFolder+'.temp/backup/',
+			dest: _developFolder+'.temp/backup/'
 		});
+
+		//Zipped Array
+		if(_sizesArrayCrud[i][3] != ""){
+			_compressFolders.push({
+				filter: 'isDirectory',
+				expand: true,
+				cwd: _destFolder+_sizesArrayCrud[i][3]+'/',
+				src: [_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]],
+				dest: _destFolder+'zipped/'
+			});
+		} else {
+			_compressFolders.push({
+				filter: 'isDirectory',
+				expand: true,
+				cwd: _destFolder,
+				src: [_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]],
+				dest: _destFolder+'zipped/'
+			});
+		}
 	}
 
 	grunt.initConfig({
@@ -183,7 +207,7 @@ module.exports = function( grunt )
 		watch: {
 			options: { livereload: true },
 			files: [_developFolder+'/**'],
-			tasks: ['clean:all','sass','includes:js','uglify','imagemin','copy','replace','string-replace','clean:temp']
+			tasks: ['clean:all','sass','includes:js','uglify','imagemin:dynamic','imagemin:specific','copy','replace','string-replace','clean:temp']
 		},
 		replace: {
 			dist: {
@@ -198,13 +222,7 @@ module.exports = function( grunt )
 		},
 		zip_directories: {
 			irep: {
-				files: [{
-					filter: 'isDirectory',
-					expand: true,
-					cwd: _destFolder+'*',
-					src: ['*'],
-					dest: _destFolder+'zipped/'
-				}]
+				files: _compressFolders
 			}
 		},
 		connect: {
