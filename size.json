@@ -3,6 +3,24 @@
 		"300x50",
 		"expand", 
 		"300x416", 
-		"campaignName"
+		"uno"
+	],
+	[
+		"300x50",
+		"in-app", 
+		"full", 
+		"uno"
+	],
+	[
+		"160x600",
+		"expand", 
+		"400x600", 
+		"dos"
+	],
+	[
+		"300x250",
+		"in-app", 
+		"full", 
+		"dos"
 	]
 ]
