@@ -25,6 +25,7 @@ module.exports = function( grunt )
 	var _sizesArrayFinal = [];
 	var _copyFiles = [];
 	var _campaignName = [];
+	var _specificImages = [];
 
 	var _separatorCampaignNameArray = [];
 	var _separatorExpandSizeArray = [];
@@ -76,7 +77,7 @@ module.exports = function( grunt )
 		_copyFiles.push({
 			expand: true, 
 			cwd: _developFolder+'.temp', 
-			src: ['**/*.{png,jpg,gif,svg}'],
+			src: ['*.{png,jpg,gif,svg}'],
 			dest: _sizesArrayFinal[i]+'/img/',
 			filter: 'isFile'
 		});
@@ -86,6 +87,34 @@ module.exports = function( grunt )
 			src: ['*.html'],
 			dest: _sizesArrayFinal[i]+'/',
 			filter: 'isFile'
+		});
+		_copyFiles.push({
+			expand: true, 
+			cwd: _developFolder+'.temp/'+_sizesArrayCrud[i][3]+'/', 
+			src: ['*.{png,jpg,gif,svg}'],
+			dest: _sizesArrayFinal[i]+'/img/',
+			filter: 'isFile'
+		});
+		_copyFiles.push({
+			expand: true, 
+			cwd: _developFolder+'.temp/backup/', 
+			src: [_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.jpg'],
+			dest: _sizesArrayFinal[i]+'/img/',
+			filter: 'isFile'
+		});
+
+		//Specific Images for each folder
+		_specificImages.push({
+			expand: true,
+			cwd: _developFolder+'img/'+_sizesArrayCrud[i][3]+'/',
+			src: ['*.{png,jpg,gif,svg}'],
+			dest: _developFolder+'.temp/'+_sizesArrayCrud[i][3]+'/',
+		});
+		_specificImages.push({
+			expand: true,
+			cwd: _developFolder+'img/backup/',
+			src: [_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.jpg'],
+			dest: _developFolder+'.temp/backup/',
 		});
 	}
 
@@ -130,9 +159,15 @@ module.exports = function( grunt )
 				files: [{
 					expand: true,
 					cwd: _developFolder+'img/',
-					src: ['**/*.{png,jpg,gif,svg}'],
+					src: ['*.{png,jpg,gif,svg}'],
 					dest: _developFolder+'.temp/'
 				}]
+			},
+			specific: {
+				options: {
+					optimizationLevel: 3
+				},
+				files: _specificImages
 			}
 		},
 		uglify: {
@@ -235,7 +270,8 @@ module.exports = function( grunt )
 		'sass',
 		'includes:js',
 		'uglify',
-		'imagemin',
+		'imagemin:dynamic',
+		'imagemin:specific',
 		'copy',
 		'replace',
 		'string-replace',
@@ -270,28 +306,3 @@ module.exports = function( grunt )
 		}
 	});
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
