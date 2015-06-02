@@ -277,7 +277,7 @@ module.exports = function( grunt )
 	grunt.loadNpmTasks('grunt-zip-directories');
 	grunt.loadNpmTasks('grunt-includes');
 
-	grunt.registerTask('serve', [
+	grunt.registerTask('fire', [
 		'connect:server',
 		'watch'
 	]);
