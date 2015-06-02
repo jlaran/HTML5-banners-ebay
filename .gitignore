@@ -5,8 +5,8 @@ README.md
 /readme.html
 /license.txt
 *.md
-# Gruntfile.js
-# package.json
+Gruntfile.js
+package.json
 
 # Ignore this folders
 
