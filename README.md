@@ -14,6 +14,6 @@ HTML5 Banner template | Kickoff files
   
   <li>Correr el kick off del proyecto - <code>grunt start</code></li>
   <li>Correr el proyecto primera vez - <code>grunt</code></li>
-  <li>Correr el proyecto en serve para trabajar - <code>grunt serve</code></li>
+  <li>Correr el proyecto en serve para trabajar - <code>grunt fire</code></li>
   <li>Comprimir los archivos - <code>grunt compress</code></li>
 </ol>
