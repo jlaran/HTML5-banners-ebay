@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 ///
-///  Cutback Gruntfile v2.8
+///  Cutback Gruntfile v3
 ///  A JS Library to easy build Doubleclick Ad Banners
 ///  Moxie Team
 ///
@@ -20,8 +20,10 @@
 
 module.exports = function( grunt ) 
 {
-	var _destFolder = 'dest/';
-	var _developFolder = 'app/';
+	var _cutbackVersion = "3.1.0";
+
+	var _destFolder = 'deploy/';
+	var _developFolder = 'source/';
 	var _sizesArrayCrud = grunt.file.readJSON('size.json');
 	var _sizesArrayFinal = [];
 	var _copyFiles = [];
@@ -215,7 +217,7 @@ module.exports = function( grunt )
 				},
 				files: [{
 					expand: true,
-					src: ['dest/**/**/*.html'],
+					src: ['deploy/**/**/*.html'],
 					dest: ''
 				}]
 			}
@@ -229,7 +231,7 @@ module.exports = function( grunt )
 		  server: {
 		    options: {
 		      livereload: true,
-		      base: 'dest',
+		      base: 'deploy',
 		      port: 9009,
 		      open: true
 		    }
@@ -238,11 +240,11 @@ module.exports = function( grunt )
 		'string-replace': {
 			dist: {
 				files: {
-					'dest/': 'dest/**/**/*.html',
+					'deploy/': 'deploy/**/**/*.html',
 				},
 				options: {
 					replacements: [{
-						pattern: /dest\/(?:(\w+)+\/)?/g,
+						pattern: /deploy\/(?:(\w+)+\/)?/g,
 						replacement: ''
 					}]
 				}
@@ -261,6 +263,9 @@ module.exports = function( grunt )
 					dest: _developFolder+'.temp/'
 				}]
 			}
+		},
+		fileExists: {
+			scripts: _developFolder
 		}
 	});
 
@@ -276,6 +281,7 @@ module.exports = function( grunt )
 	grunt.loadNpmTasks('grunt-string-replace');
 	grunt.loadNpmTasks('grunt-zip-directories');
 	grunt.loadNpmTasks('grunt-includes');
+	grunt.loadNpmTasks('grunt-file-exists');
 
 	grunt.registerTask('fire', [
 		'connect:server',
@@ -301,26 +307,32 @@ module.exports = function( grunt )
 	]);
 
 	grunt.task.registerTask('start', 'Write initial files', function(arg1, arg2) {
-		var sassFolder = _developFolder+'sass/';
-		var jsFolder = _developFolder+'js/';
+		var startCreated = grunt.file.isDir(_developFolder);
 
-		grunt.file.write(_developFolder+'index.html', '<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8">\n\t\t<title>@@__SOURCE_PATH__</title>\n\t\t<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">\n\t\t<link rel="stylesheet" href="css/@@__SOURCE_PATH__.css">\n\t</head>\n\t<body>\n\n\t\t<!-- Start your Banner here -->\n\n\t\t<div class="banner" id="banner">\n\t\t\t<div id="collapse-banner">\n\t\t\t\t<h1>Headline Example</h1>\n\t\t\t\t<h2>Small headline</h2>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<!-- Finish your Banner here -->\n\n\t\t<script src="http://s0.2mdn.net/ads/studio/Enabler.js"></script>\n\t\t<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.2/TweenMax.min.js"></script>\n\t\t<script src="https://cdn.jsdelivr.net/cutback-js/latest/cutback.min.js"></script>\n\t\t<script src="js/@@__SOURCE_PATH__.js"></script>\n\n\t\t<!-- <script src="https://cdn.jsdelivr.net/cutback-js/latest/cutback-stats.min.js"></script> -->\n\n\t</body>\n</html>');
-		grunt.file.write(sassFolder+'variables.scss', '//Sass variables goes here\n\n$opacityCero: 0;\n\n//Background Colors\n$BackgroundWhite: #ffffff;\n\n//Border Colors\n$borderGray: #333333;\n\n\n//Mixins\n\n@mixin border-radius($radius) {\n\t-webkit-border-radius: $radius;\n\t-moz-border-radius: $radius;\n\t-ms-border-radius: $radius;\n\tborder-radius: $radius;\n}');
-		grunt.file.write(jsFolder+'sharedFunctions.js', '//Shared Functions goes here\n\nvar customFunctions = {\n\n}');
-		grunt.file.mkdir(_developFolder+'img/');
+		if(startCreated == false){
+			var sassFolder = _developFolder+'sass/';
+			var jsFolder = _developFolder+'js/';
 
-		for( i = 0; i < _sizesArrayCrud.length; ++i ) {
+			grunt.file.write(_developFolder+'index.html', '<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8">\n\t\t<title>@@__SOURCE_PATH__</title>\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />\n\t\t<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">\n\t\t<link rel="stylesheet" href="css/@@__SOURCE_PATH__.css">\n\t</head>\n\t<body>\n\n\t\t<!-- Start your Banner here -->\n\n\t\t<div class="banner" id="banner">\n\t\t\t<div id="collapse-banner">\n\t\t\t\t<h1>Headline Example</h1>\n\t\t\t\t<h2>Small headline</h2>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<!-- Finish your Banner here -->\n\n\t\t<script src="http://s0.2mdn.net/ads/studio/Enabler.js"></script>\n\t\t<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.2/TweenMax.min.js"></script>\n\t\t<script src="https://cdn.jsdelivr.net/cutback-js/'+_cutbackVersion+'/cutback.min.js"></script>\n\t\t<script src="js/@@__SOURCE_PATH__.js"></script>\n\n\t\t<!-- <script src="https://cdn.jsdelivr.net/cutback-js/'+_cutbackVersion+'/cutback-stats.min.js"></script> -->\n\n\t</body>\n</html>');
+			grunt.file.write(sassFolder+'variables.scss', '//Sass variables goes here\n\n$opacityCero: 0;\n\n//Background Colors\n$BackgroundWhite: #ffffff;\n\n//Border Colors\n$borderGray: #333333;\n\n\n//Mixins\n\n@mixin border-radius($radius) {\n\t-webkit-border-radius: $radius;\n\t-moz-border-radius: $radius;\n\t-ms-border-radius: $radius;\n\tborder-radius: $radius;\n}');
+			grunt.file.write(jsFolder+'sharedFunctions.js', '//Shared Functions goes here\n\nvar customFunctions = {\n\n}');
+			grunt.file.mkdir(_developFolder+'img/');
 
-			var collapseSize = _sizesArrayCrud[i][0].split("x");
-			var expandSize = _sizesArrayCrud[i][2].split("x");
+			for( i = 0; i < _sizesArrayCrud.length; ++i ) {
 
-			var sassInitialText = '//Sass code goes here \n @import "variables"; \n\n body {\n\tbackground: $BackgroundWhite;\n}\n\n#banner {\n\twidth: '+ collapseSize[0] +'px;\n\theight: '+ collapseSize[1] +'px;\n}\n\n#collapse-banner {\n\twidth: '+ (collapseSize[0] - 2) +'px;\n\theight: '+ (collapseSize[1] - 2) +'px;\n\tbackground: $BackgroundWhite;\n\toverflow: hidden;\n\tcursor: pointer;\n\tborder: 1px $borderGray solid;\n\tposition: relative;\n}'+ ( (_sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][2] != "full"))  ?  "\n\n#expanded-banner {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: "+ (expandSize[0] - 2) +"px;\n\theight: "+ (expandSize[1] - 2) +"px;\n\tbackground: $BackgroundWhite;\n\tdisplay: none;\n\topacity: $opacityCero;\n\toverflow: hidden;\n\tborder: 1px $borderGray solid;\n}" : "") + (_sizesArrayCrud[i][2] == "full"  ?  "\n\n#expanded-banner {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbackground: $BackgroundWhite;\n\tdisplay: none;\n\topacity: $opacityCero;\n\toverflow: hidden;\n\tborder: 1px $borderGray solid;\n}" : "");
+				var collapseSize = _sizesArrayCrud[i][0].split("x");
+				var expandSize = _sizesArrayCrud[i][2].split("x");
 
-			grunt.file.write(sassFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.scss', sassInitialText);
+				var sassInitialText = '//Sass code goes here \n @import "variables"; \n\n body {\n\tbackground: $BackgroundWhite;\n}\n\n#banner {\n\twidth: '+ collapseSize[0] +'px;\n\theight: '+ collapseSize[1] +'px;\n}\n\n#collapse-banner {\n\twidth: '+ (collapseSize[0] - 2) +'px;\n\theight: '+ (collapseSize[1] - 2) +'px;\n\tbackground: $BackgroundWhite;\n\toverflow: hidden;\n\tcursor: pointer;\n\tborder: 1px $borderGray solid;\n\tposition: relative;\n}'+ ( (_sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][2] != "full"))  ?  "\n\n#expanded-banner {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: "+ (expandSize[0] - 2) +"px;\n\theight: "+ (expandSize[1] - 2) +"px;\n\tbackground: $BackgroundWhite;\n\tdisplay: none;\n\topacity: $opacityCero;\n\toverflow: hidden;\n\tborder: 1px $borderGray solid;\n}" : "") + (_sizesArrayCrud[i][2] == "full"  ?  "\n\n#expanded-banner {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbackground: $BackgroundWhite;\n\tdisplay: none;\n\topacity: $opacityCero;\n\toverflow: hidden;\n\tborder: 1px $borderGray solid;\n}" : "");
 
-			var jsInitialText = '//JS code goes here\n\nvar banner = new Banner({\n\t'+ ( _sizesArrayCrud[i][1] != ""  ?  'type: "' + _sizesArrayCrud[i][1] + '",\n\t' : "" ) + ( _sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][1] == "in-app" && _sizesArrayCrud[i][2] != "") ?  "expand: true,\n\t" : "" ) + ( _sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][1] == "expand" ?  "finalExpandSize: [0,0,"+expandSize[0]+","+expandSize[1]+"],\n\t" : "" ) + ( _sizesArrayCrud[i][1] == "expand" ?  'hotspotClose: [""],\n\t' : "" ) + ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand") ?  'hotspotExpand: [""],\n\t' : "" ) + 'timelines: ["firstTimeline"],\n\telementsToRegister: [\n\t\t{eventType: "click", element: "#identifier", functionToCall: "function"}\n\t],\n\tanimations: {\n\t\tfirstFrame : function(){\n\t\t}'+ ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand")  ?  ",\n\t\texpandStartAnimation : function(){\n\t\t},\n\t\tcollapseStartAnimation: function(){\n\t\t}" : "" ) +'\n\t},\n\ttimelinesAnimation: {\n\t\tregister: function(){\n\t\t\ttimelinesArray[0].to("identifier", 0.2, {opacity:1});\n\t\t}\n\t}\n});\n\n//import "sharedFunctions.js"';
+				grunt.file.write(sassFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.scss', sassInitialText);
 
-			grunt.file.write(jsFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.js', jsInitialText);
+				var jsInitialText = '//JS code goes here\n\nvar banner = new Banner({\n\t'+ ( _sizesArrayCrud[i][1] != ""  ?  'type: "' + _sizesArrayCrud[i][1] + '",\n\t' : "" ) + ( _sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][1] == "in-app" && _sizesArrayCrud[i][2] != "") ?  "expand: true,\n\t" : "" ) + ( _sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][1] == "expand" ?  "finalExpandSize: [0,0,"+expandSize[0]+","+expandSize[1]+"],\n\t" : "" ) + ( _sizesArrayCrud[i][1] == "expand" ?  'hotspotClose: [""],\n\t' : "" ) + ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand") ?  'hotspotExpand: [""],\n\t' : "" ) + 'timelinesName: ["firstTimeline"],\n\telementsToRegister: [\n\t\t{eventType: "click", element: "#identifier", functionToCall: "function"}\n\t],\n\tanimationFrames: [\n\t\tfunction firstFrame(){\n\t\t}\n\t],\n\ttimelinesAnimation: {\n\t\tregister: function(){\n\t\t\ttimelinesArray[0].to("identifier", 0.2, {opacity:1});\n\t\t}'+ ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand")  ?  ",\n\t\texpandStartAnimation : function(){\n\t\t},\n\t\tcollapseStartAnimation: function(){\n\t\t}" : "" ) +'\n\t}\n});\n\n//import "sharedFunctions.js"';
+
+				grunt.file.write(jsFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.js', jsInitialText);
+			}
+		}else{
+			grunt.log.subhead("The source folder is already created!");
 		}
 	});
 };
