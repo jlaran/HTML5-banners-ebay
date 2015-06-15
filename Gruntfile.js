@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 ///
-///  Cutback Gruntfile v3
+///  Cutback Gruntfile v3.1
 ///  A JS Library to easy build Doubleclick Ad Banners
 ///  Moxie Team
 ///
@@ -327,7 +327,7 @@ module.exports = function( grunt )
 
 				grunt.file.write(sassFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.scss', sassInitialText);
 
-				var jsInitialText = '//JS code goes here\n\nvar banner = new Banner({\n\t'+ ( _sizesArrayCrud[i][1] != ""  ?  'type: "' + _sizesArrayCrud[i][1] + '",\n\t' : "" ) + ( _sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][1] == "in-app" && _sizesArrayCrud[i][2] != "") ?  "expand: true,\n\t" : "" ) + ( _sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][1] == "expand" ?  "finalExpandSize: [0,0,"+expandSize[0]+","+expandSize[1]+"],\n\t" : "" ) + ( _sizesArrayCrud[i][1] == "expand" ?  'hotspotClose: [""],\n\t' : "" ) + ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand") ?  'hotspotExpand: [""],\n\t' : "" ) + 'timelinesName: ["firstTimeline"],\n\telementsToRegister: [\n\t\t{eventType: "click", element: "#identifier", functionToCall: "function"}\n\t],\n\tanimationFrames: [\n\t\tfunction firstFrame(){\n\t\t}\n\t],\n\ttimelinesAnimation: {\n\t\tregister: function(){\n\t\t\ttimelinesArray[0].to("identifier", 0.2, {opacity:1});\n\t\t}'+ ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand")  ?  ",\n\t\texpandStartAnimation : function(){\n\t\t},\n\t\tcollapseStartAnimation: function(){\n\t\t}" : "" ) +'\n\t}\n});\n\n//import "sharedFunctions.js"';
+				var jsInitialText = '//JS code goes here\n\nvar banner = new Banner({\n\t'+ ( _sizesArrayCrud[i][1] != ""  ?  'bannerType: "' + _sizesArrayCrud[i][1] + '",\n\t' : "" ) + ( _sizesArrayCrud[i][1] == "expand" || (_sizesArrayCrud[i][1] == "in-app" && _sizesArrayCrud[i][2] != "") ?  "expand: true,\n\t" : "" ) + ( _sizesArrayCrud[i][2] != "" && _sizesArrayCrud[i][1] == "expand" ?  "finalExpandSize: [0,0,"+expandSize[0]+","+expandSize[1]+"],\n\t" : "" ) + ( _sizesArrayCrud[i][1] == "expand" ?  'hotspotClose: [""],\n\t' : "" ) + ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand") ?  'hotspotExpand: [""],\n\t' : "" ) + 'timelinesName: ["firstTimeline"],\n\telementsToRegister: [\n\t\t{eventType: "click", element: "#identifier", functionToCall: "function"}\n\t],\n\tanimationFrames: [\n\t\tfunction firstFrame(){\n\t\t}\n\t],\n\ttimelinesAnimation: {\n\t\tregister: function(){\n\t\t\ttimelinesArray[0].to("identifier", 0.2, {opacity:1});\n\t\t}'+ ( (_sizesArrayCrud[i][2] != "" || _sizesArrayCrud[i][1] == "expand")  ?  ",\n\t\texpandStartAnimation : function(){\n\t\t},\n\t\tcollapseStartAnimation: function(){\n\t\t}" : "" ) +'\n\t}\n});\n\n//import "sharedFunctions.js"';
 
 				grunt.file.write(jsFolder+_sizesArrayCrud[i][0]+_separatorTypeArray[i]+_sizesArrayCrud[i][1]+_separatorExpandSizeArray[i]+_sizesArrayCrud[i][2]+_separatorCampaignNameArray[i]+_sizesArrayCrud[i][3]+'.js', jsInitialText);
 			}
