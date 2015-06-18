@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 ///
-///  Cutback Gruntfile v3.1
+///  Cutback Gruntfile v3.3
 ///  A JS Library to easy build Doubleclick Ad Banners
 ///  Moxie Team
 ///
@@ -20,7 +20,7 @@
 
 module.exports = function( grunt ) 
 {
-	var _cutbackVersion = "3.1.0";
+	var _cutbackVersion = "3.3.0";
 
 	var _destFolder = 'deploy/';
 	var _developFolder = 'source/';
