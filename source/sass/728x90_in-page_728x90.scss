@@ -1,0 +1,21 @@
+//Sass code goes here 
+ @import "variables"; 
+
+ body {
+	background: $BackgroundWhite;
+}
+
+#banner {
+	width: 728px;
+	height: 90px;
+}
+
+#collapse-banner {
+	width: 726px;
+	height: 88px;
+	background: $BackgroundWhite;
+	overflow: hidden;
+	cursor: pointer;
+	border: 1px $borderGray solid;
+	position: relative;
+}

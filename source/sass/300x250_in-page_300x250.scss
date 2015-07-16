@@ -1,0 +1,165 @@
+//Sass code goes here 
+ @import "variables"; 
+
+ body {
+	background: $BackgroundWhite;
+}
+
+#banner {
+	width: 300px;
+	height: 250px;
+}
+
+#collapse-banner {
+	width: 298px;
+	height: 248px;
+	background: $BackgroundWhite;
+	overflow: hidden;
+	//cursor: pointer;
+	border: 1px $brandBlue solid;
+	position: relative;
+
+	#logo {
+		background: url(../img/logo.jpg);
+		width: 104px;
+		height: 27px;
+		display: block;
+		margin-top: 5px;
+		margin-left: 5px;
+	}
+
+	#menu {
+		width: 179px;
+		height: 14px;
+		position: absolute;
+		top: 19px;
+		right: 0px;
+		border-top: 1px solid $brandBlue;
+		opacity: $opacityCero;
+
+		.link-menu {
+			background: url(../img/menu.jpg);
+			background-repeat: no-repeat;
+			display: block;
+			position: absolute;
+			top: 4px;
+			cursor: pointer;
+		}
+
+		#link-one {
+			width: 31px;
+			height: 10px;
+			left: 0;
+		}
+
+		#link-two {
+			width: 39px;
+			height: 9px;
+			left: 39px;
+			background-position: 0 -10px;
+		}
+
+		#link-three {
+			width: 36px;
+			height: 9px;
+			left: 86px;
+			background-position: 0 -19px;
+		}
+
+		#link-four {
+			width: 46px;
+			height: 10px;
+			left: 130px;
+			background-position: 0 -28px;
+		}
+
+		.here {
+			display: block;
+			background: url(../img/here.jpg);
+			background-repeat: no-repeat;
+			position: absolute;
+			top: -16px;
+			left: -3px;
+			width: 37px;
+			height: 15px;
+		}
+	}
+
+	#initial-load {
+		background: url(../img/splash.jpg);
+		width: 291px;
+		height: 208px;
+		position: absolute;
+		left: 3px;
+		bottom: 3px;
+	}
+
+	#content {
+		background: url(../img/blue-shape.jpg);
+		width: 290px;
+		height: 208px;
+		position: absolute;
+		left: 3px;
+		bottom: 3px;
+		opacity: $opacityCero;
+
+		.content-text {
+			width: 153px;
+			height: 195px;
+			position: absolute;
+			background: #fff;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			left: 7px;
+			top: 7px;
+
+			.backtoschool-logo {
+				background: url(../img/backtoschool.jpg);
+				width: 80px;
+				height: 41px;
+				position: absolute;
+				top: 9px;
+				left: 37px;
+				display: block;
+			}
+
+			.copy-text {
+				background: url(../img/decorations-text.jpg);
+				background-position: center center;
+				background-repeat: no-repeat;
+				width: 102px;
+				height: 103px;
+				position: absolute;
+				top: 76px;
+  				left: 28px;
+				display: block;	
+			}
+		}
+
+		.content-image {
+			width: 116px;
+			height: 152px;
+			position: absolute;
+			right: 7px;
+			top: 7px;
+			background: #333;
+			background: url(../img/planner-image.jpg);
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+		}
+
+		#cta {
+			background: url(../img/cta.jpg);
+			width: 101px;
+			height: 25px;
+			display: block;
+			position: absolute;
+			bottom: 8px;
+			right: 11px;
+			cursor: pointer;
+			opacity: $opacityCero;
+		}
+	}
+}
